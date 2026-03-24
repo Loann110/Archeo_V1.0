@@ -1,8 +1,9 @@
-@echo off
-setlocal
+installer pyinstaller via : pip install pyinstaller
 
-REM Toujours se placer à la racine du projet (le dossier où est ce fichier)
-cd /d "%~dp0"
+Toujours se placer à la racine du projet
+cd C:\Users\loann\Desktop\projets\Archeo_V1   # pour mon cas 
+
+Copier coller les commandes suivantes dans l'invite de commande:
 
 set APP_NAME=Archeo_V1
 set ENTRY=app.py
