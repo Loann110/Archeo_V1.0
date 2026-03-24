@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Archeo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=dev1" />
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash" class="hidden">
+    <div id="splashContent">
+      <div id="splashHalo"></div>
+      <div id="splashLogo">ARCHEO</div>
+      <div id="splashMadeBy">Made by Loann KAIKA</div>
+      <div id="splashLoader"></div>
+    </div>
+  </div>
+
+  <div id="layout">
+    <!-- Colonne gauche : viewer -->
+    <div id="left">
+      <div class="torchglow"></div>
+
+      <!-- Toolbar : gauche = actions, droite = capture -->
+      <div id="toolbar">
+        <div class="group-left">
+          <!-- Importer .obj (label relié à l'input fichier) -->
+          <label id="btnImport" class="btn icon-btn" for="fileObj"
+                 title="Importer un .obj" aria-label="Importer un .obj">
+            <!-- Icône Upload -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <path d="M7 10l5-5 5 5"/>
+              <path d="M12 5v12"/>
+            </svg>
+          </label>
+          <input id="fileObj" type="file" accept=".obj" />
+
+          <!-- Réinit vue -->
+          <button id="reset" class="btn icon-btn" title="Réinitialiser la vue" aria-label="Réinitialiser la vue" type="button">
+            <!-- Icône Refresh -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12a9 9 0 1 1-2.64-6.36"/>
+              <path d="M21 3v6h-6"/>
+            </svg>
+          </button>
+
+          <!-- Supprimer l'objet -->
+          <button id="removeObj" class="btn icon-btn" title="Supprimer l'objet" aria-label="Supprimer l'objet" type="button">
+            <!-- Icône Trash -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 6h18"/>
+              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="group-right">
+          <button id="capture" class="capture-btn" aria-label="Capturer la vue" title="Capturer la vue" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3.75" y="7.25" width="16.5" height="9.5" rx="3"/>
+                <circle cx="12" cy="12" r="3.2"/>
+                <path d="M7.8 7.25h2l.8-1.7h3.6l.8 1.7h2"/>
+              </g>
+              <circle cx="17.3" cy="9.4" r="0.7" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Flux MJPEG Open3D / MeshLab -->
+      <div id="container3D">
+        <img id="stream" src="/stream.mjpg" alt="Open3D/MeshLab stream" draggable="false"
+             style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; user-select:none; -webkit-user-drag:none;" />
+      </div>
+
+      <!-- Drag & drop -->
+      <div id="drop">Dépose ton fichier <b>.obj</b> ici</div>
+    </div>
+
+    <!-- Colonne droite : réglages -->
+    <div id="side">
+      <div id="panel">
+        <h3>Apparence</h3>
+        <div class="row">
+          <label>Couleur de l'objet</label>
+          <div class="field-with-btn">
+            <input id="objColor" type="color" value="#b0a9a2">
+            <button id="resetObjColor" type="button" class="mini-btn" title="Réinitialiser">↺</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Couleur du fond</label>
+          <div class="field-with-btn">
+            <input id="bgColor" type="color" value="#0b0028">
+            <button id="resetBgColor" type="button" class="mini-btn" title="Réinitialiser">↺</button>
+          </div>
+        </div>
+
+        <div class="small">
+          Astuces : molette = zoom, glisser = rotation, Ctrl+glisser = pan, touche <kbd>I</kbd> inverse le sens du zoom.
+        </div>
+
+        <!-- ——— Switch moteur ——— -->
+        <h3>Moteur</h3>
+        <div class="row">
+          <label>Rendu</label>
+          <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+            <button id="btnEngineO3D" class="btn" type="button" title="Basculer sur le moteur Open3D">Open3D</button>
+            <button id="btnEngineML"  class="btn" type="button" title="Basculer sur le moteur MeshLab (APSS)">MeshLab</button>
+          </div>
+        </div>
+
+        <!-- ——— Panneau MeshLab (APSS) ——— -->
+        <div id="mlPanel" style="display:none; border-top:1px solid rgba(0,0,0,.25); padding-top:.6rem; margin-top:.2rem;">
+          <h3>Réglages MeshLab (APSS)</h3>
+
+          <div class="row">
+            <label>Filter scale</label>
+            <input id="ml_filterscale" type="number" step="0.1" min="0.1" value="2.0">
+          </div>
+
+          <div class="row">
+            <label>Spherical param.</label>
+            <input id="ml_spherical" type="number" step="0.1" min="0.1" value="1.0">
+          </div>
+
+          <div class="row">
+            <label>Curvature type</label>
+            <select id="ml_ctype">
+              <option value="mean" selected>Mean</option>
+              <option value="gaussian">Gaussian</option>
+              <option value="principal_max">K1</option>
+              <option value="principal_min">K2</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label>Rotate 180° (Y)</label>
+            <label class="check"><input id="ml_rotate" type="checkbox"> Activer</label>
+          </div>
+
+          <div class="row">
+            <button id="ml_apply" class="btn fullwidth-btn" type="button">
+              Apply
+            </button>
+          </div>
+
+          <div class="small">Les changements sont appliqués après avoir cliqué sur <b>Apply</b></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App en module -->
+  <script type="module" src="/assets/js/app.js?v=dev1"></script>
+</body>
+</html>

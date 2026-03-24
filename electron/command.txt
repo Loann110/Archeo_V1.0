@@ -1,0 +1,3 @@
+cd C:\Users\loann\Desktop\projets\Archeo_V1\electron
+rmdir /s /q dist 2>$null
+npm run build

@@ -1,0 +1,43 @@
+{
+  "name": "archeo",
+  "version": "1.0.0",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "build": "electron-builder --win nsis",
+    "build:portable": "electron-builder --win portable"
+  },
+  "dependencies": {
+    "electron-is-dev": "^3.0.1",
+    "get-port": "^7.0.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.archeo.viewer",
+    "asar": true,
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!backend_dist/**"
+    ],
+    "extraResources": [
+      {
+        "from": "backend_dist/backend",
+        "to": "backend"
+      }
+    ]
+  }
+}

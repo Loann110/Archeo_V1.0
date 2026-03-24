@@ -1,0 +1,32 @@
+@echo off
+setlocal
+
+REM Toujours se placer à la racine du projet (le dossier où est ce fichier)
+cd /d "%~dp0"
+
+set APP_NAME=Archeo_V1
+set ENTRY=app.py
+
+py -m PyInstaller ^
+  --noconfirm ^
+  --clean ^
+  --name "%APP_NAME%" ^
+  --onedir ^
+  --distpath "dist" ^
+  --workpath "build" ^
+  --specpath "build\spec" ^
+  --collect-all open3d ^
+  --collect-all pymeshlab ^
+  --collect-all flask ^
+  --collect-all flask_sock ^
+  --collect-all dash ^
+  --collect-all plotly ^
+  --hidden-import "pkg_resources.py2_warn" ^
+  --hidden-import "engine" ^
+  --hidden-import "engine_meshlab" ^
+  --add-data "%CD%\assets;assets" ^
+  --add-data "%CD%\models;models" ^
+  --add-data "%CD%\index.html;." ^
+  "%ENTRY%"
+
+endlocal
