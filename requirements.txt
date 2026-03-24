@@ -1,0 +1,15 @@
+# Archeo_V1.0 
+# Notes:
+# - torch/torchvision may need a CUDA-specific install command depending on your GPU/OS.
+
+fastapi
+uvicorn[standard]
+jinja2
+numpy
+pillow
+open3d
+pymeshlab
+PyTurboJPEG
+torch
+torchvision
+timm
