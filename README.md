@@ -234,7 +234,18 @@ python app.py
 6. Lancez `Archeo.exe`
 
 ---
+## Liens
+Lien de téléchargement du logiciel : https://drive.google.com/file/d/1p79jJQ0PcAqf08LT8ItTAb_gdUGnzt7k/view?usp=drive_link
 
+Preview vidéo : https://drive.google.com/file/d/1GCA3sa65FVWNi_lpYvYGAK-Esamn19E4/view?usp=drive_link
+
+Database d'images annotées : https://drive.google.com/file/d/1IoGinySxOuENC3Es-r4TPzL_Kdvx-vCO/view?usp=drive_link
+
+Classification model (best_model_traced.pt) : https://drive.google.com/file/d/1TJkiDjuUBn9G6V7omAMNO1MfQHo6ic2B/view?usp=drive_link
+
+Segmentation model (seg.pt) : https://drive.google.com/file/d/15aoyNV8pdBPY_p9RhcB7O7RoYCJFZ7JM/view?usp=sharing
+
+---
 ## Auteur
 
 Projet réalisé par **Loann KAIKA**.
